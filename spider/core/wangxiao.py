@@ -39,3 +39,56 @@ class WangXiao168:
         response = self._session.get(url)
         data = response.json()
         return data['data']
+
+    def get_study_plan_list(self, semester: int, page: int = 1, row: int = 200) -> list:
+        """
+        获取视频学习列表
+        :param semester: 学期id
+        :param page: 页数
+        :param row: 每页的尺寸
+        :return:
+        """
+
+        params = {
+            "page": page,
+            "row": row,
+            "semester": semester
+        }
+        url = self.join_url("cjapi/other/student/plan/list")
+        response = self._session.get(url, params=params)
+        data = response.json()
+        return data['data']
+
+    def get_study_plan_time(self, semester: int):
+        """
+        获取学期开启和结束时间
+        :param semester: 学期id
+        :return:
+        """
+        url = self.join_url("cjapi/other/student/semester/studyTime")
+
+        params = {
+            "semester": semester
+        }
+        response = self._session.get(url, params=params)
+        data = response.json()
+
+        return data['data']
+
+    def get_study_plan_view(self, view_id: int) -> dict:
+        """
+        获取学习计划详情
+        :param view_id:
+        :return:
+        """
+        url = self.join_url("cjapi/other/student/plan/view")
+
+        params = {
+            "id": view_id
+        }
+
+        response = self._session.get(url, params=params)
+
+        data = response.json()
+
+        return data['data']
