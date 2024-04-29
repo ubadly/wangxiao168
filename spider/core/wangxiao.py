@@ -92,3 +92,53 @@ class WangXiao168:
         data = response.json()
 
         return data['data']
+
+    def get_study_chapter_view(self, view_id: int, tpc_id: int):
+        """
+        获取视频详情信息
+
+        :param view_id:
+        :param tpc_id:
+        :return:
+        """
+
+        url = self.join_url("cjapi/other/student/chapter/view")
+
+        params = {
+            "id": view_id,
+            "tpcid": tpc_id
+        }
+
+        response = self._session.get(url, params=params)
+
+        data = response.json()
+
+        return data['data']
+
+    def update_video_status(self, tpc_id: int, curriculum_id: int, chapter_id: int, video_id: int, status_type: int, process: int):
+        """
+        更新视频状态
+        :param tpc_id:
+        :param curriculum_id:
+        :param chapter_id:
+        :param video_id: 食品id
+        :param status_type: 状态类型
+        :param process: 进度
+        :return:
+        """
+        url = self.join_url("cjapi/other/student/curriculum/progress/update/v2")
+
+        data = {
+            "tpcId": tpc_id,
+            "curriculumid": curriculum_id,
+            "chapterid": chapter_id,
+            "videoid": video_id,
+            "type": status_type,
+            "progress": process
+        }
+
+        response = self._session.put(url, json=data)
+
+        data = response.json()
+
+        return data['data']
