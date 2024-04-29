@@ -4,6 +4,7 @@ from urllib import parse
 from requests import Session
 
 from spider.common.enums import School
+from spider.common.utils import svg2png
 
 
 class WangXiao168:
@@ -22,6 +23,42 @@ class WangXiao168:
     def get_session(self) -> Session:
         return self._session
 
+    def do_login(self, username: str, password: str):
+        """
+        登陆
+        :param username:
+        :param password:
+        :return:
+        """
+        url = self.join_url("cjapi/other/student/login")
+
+        key, code = self.get_capt_code()
+        data = {
+            "username": username,
+            "password": password,
+            "code": str(code),
+            "codekey": key,
+            "school_id": 28
+        }
+
+        response = self._session.post(url, json=data)
+
+        data = response.json()
+
+        if data['errCode'] == 200 and data['message'] == '登陆成功' and data['data'] and data['data'].get("token"):
+            token = data['data']['token']
+            self._session.headers.update({'Authorization': token})
+        return data
+
+    def set_token(self, token: str):
+        """
+        设置登陆信息
+
+        :param token:
+        :return:
+        """
+        self._session.headers.update({'Authorization': token})
+
     def join_url(self, url: str) -> str:
         """
         拼接连接
@@ -29,6 +66,15 @@ class WangXiao168:
         :return:
         """
         return parse.urljoin(self._school.value.url, url)
+
+    def get_capt_code(self):
+        url = "https://xatu.168wangxiao.com/cjapi/other/code"
+        response = self._session.get(url)
+        data = response.json()
+        code = svg2png(data['data']['img'])
+        key = data['data']['codekey']
+
+        return key, code
 
     def get_semester_list(self) -> list:
         """
@@ -51,7 +97,7 @@ class WangXiao168:
 
         params = {
             "page": page,
-            "row": row,
+            "rows": row,
             "semester": semester
         }
         url = self.join_url("cjapi/other/student/plan/list")
