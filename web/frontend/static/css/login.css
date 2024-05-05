@@ -1,0 +1,35 @@
+#container {
+    margin: 200px auto;
+}
+
+.login-box {
+    height: 300px;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(188, 201, 255, 0.49);
+    border-radius: 12px;
+    padding: 50px;
+}
+
+.form-item{
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+}
+
+.input-login {
+    margin: 0 auto;
+    width: 80%;
+    height: 30px;
+}
+.input-button{
+    width: 80px;
+    margin: 0 auto;
+}
+
+#account {
+
+}
+

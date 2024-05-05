@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+    <meta charset="UTF-8">
+    <title>登陆</title>
+    <link rel="stylesheet" href="/static/css/login.css">
+</head>
+<body>
+<div id="container">
+    <form action="/login" method="post" class="login-box" name="login">
+        <div class="form-item">
+            <label for="account">账号：</label>
+            <input type="text" id="account" name="username" class="input-login">
+        </div>
+
+        <div class="form-item">
+            <label for="password">密码：</label>
+            <input type="password" id="password" name="password" class="input-login">
+        </div>
+        <div class="form-item">
+            <input type="button" value="登陆" class="input-button" onclick="doLogin()">
+        </div>
+    </form>
+</div>
+</body>
+
+<script src="/static/js/api.js"></script>
+<script>
+
+
+    function doLogin() {
+        let username = document.querySelector("#account").value;
+        let password = document.querySelector("#password").value;
+
+        if (!username.trim() || !password.trim()) {
+            alert("请输入账号密码")
+            return 0;
+        }
+        post_request("/login", {
+            username,
+            password
+        }).then(res => {
+            debugger
+            localStorage.setItem("token", res.data.token)
+        })
+
+    }
+</script>
+</html>
